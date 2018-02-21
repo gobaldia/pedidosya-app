@@ -13,4 +13,9 @@ public class PedidosyaAppApplicationTests {
 	public void contextLoads() {
 	}
 
+	@Test
+	public void testLogin() {
+		login()
+	}
+
 }

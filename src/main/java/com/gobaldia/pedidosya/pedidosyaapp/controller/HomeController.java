@@ -13,11 +13,4 @@ public class HomeController {
     public ModelAndView home(Model model) {
         return new ModelAndView("index");
     }
-
-    @RequestMapping("/login")
-    public ModelAndView login(Model model) {
-
-        model.addAttribute("userLogin", new UserLogin());
-        return new ModelAndView("login");
-    }
 }
