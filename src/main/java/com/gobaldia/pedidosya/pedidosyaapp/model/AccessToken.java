@@ -1,20 +1,20 @@
 package com.gobaldia.pedidosya.pedidosyaapp.model;
 
 public class AccessToken {
-    private String accessToken;
+    private String access_token;
 
-    public AccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public AccessToken(String access_token) {
+        this.access_token = access_token;
     }
 
     public AccessToken() {
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getAccess_token() {
+        return access_token;
     }
 }
