@@ -1,11 +1,16 @@
 package com.gobaldia.pedidosya.pedidosyaapp.controller;
 
+import com.gobaldia.pedidosya.pedidosyaapp.model.User;
 import com.gobaldia.pedidosya.pedidosyaapp.model.UserLogin;
+import com.gobaldia.pedidosya.pedidosyaapp.security.LoginPedidosYaStg;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class LoginController {
@@ -18,9 +23,17 @@ public class LoginController {
     }
 
     @RequestMapping("/dologin")
-    public ModelAndView doLogin(Model model, @ModelAttribute(value = "userLogin") UserLogin car) {
+    public ModelAndView doLogin(Model model,
+                                HttpServletResponse response,
+                                @ModelAttribute(value = "userLogin") UserLogin userLogin) {
 
+        User loggedUser = LoginPedidosYaStg.login(userLogin.getEmail(), userLogin.getPassword());
 
-        return new ModelAndView("index");
+        String loggedUserName = loggedUser.getName();
+        String loggedUserLastName = loggedUser.getLastName();
+        response.addCookie(new Cookie("loggedUserName", loggedUserName));
+        response.addCookie(new Cookie("loggedUserLastName", loggedUserLastName));
+
+        return new ModelAndView("redirect:/home");
     }
 }

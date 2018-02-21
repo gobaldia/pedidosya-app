@@ -13,31 +13,30 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 
 @Configuration
-public class LoginPedidosYaStg implements Login {
+public class LoginPedidosYaStg {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginPedidosYaStg.class);
 
     @Value("${pedidosya.api.endpoint}")
-    private String pedidosYaApiEndpoint = "http://stg-api.pedidosya.com/public/v1";
+    private static String pedidosYaApiEndpoint = "http://stg-api.pedidosya.com/public/v1";
 
     @Value("${pedidosya.client.id}")
-    private String clientId = "test";
+    private static String clientId = "test";
 
     @Value("${pedidosya.client.secret}")
-    private String clientSecret = "PeY@@Tr1v1@943";
+    private static String clientSecret = "PeY@@Tr1v1@943";
 
     public LoginPedidosYaStg() {
     }
 
-    @Override
-    public User login(String email, String password) {
+    public static User login(String email, String password) {
         String appToken = getAppToken();
         String userToken = getUserToken(appToken, email, password);
         User user = getUserInfo(userToken);
         return user;
     }
 
-    private String getAppToken() {
+    private static String getAppToken() {
         RestTemplate restTemplate = new RestTemplate();
         String getAppTokenUri = String.format("%s/tokens?clientId=%s&clientSecret=%s", pedidosYaApiEndpoint, clientId, clientSecret);
         AccessToken appToken = new AccessToken();
@@ -59,7 +58,7 @@ public class LoginPedidosYaStg implements Login {
         return new String();
     }
 
-    private String getUserToken(String appToken, String email, String password) {
+    private static String getUserToken(String appToken, String email, String password) {
         RestTemplate restTemplate = new RestTemplate();
         String getAppTokenUri = String.format("%s/tokens?userName=%s&password=%s", pedidosYaApiEndpoint, email, password);
         AccessToken userToken = new AccessToken();
@@ -82,7 +81,7 @@ public class LoginPedidosYaStg implements Login {
         return new String();
     }
 
-    private User getUserInfo(String userToken) {
+    private static User getUserInfo(String userToken) {
         RestTemplate restTemplate = new RestTemplate();
         String getAppTokenUri = String.format("%s/myAccount", pedidosYaApiEndpoint);
         User user = new User();
