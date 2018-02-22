@@ -1,7 +1,7 @@
 $(document).ready(function() {
     setLoggedUser();
     //getRestaurants(getCookie("userToken"), getUrlParameter("lat"), getUrlParameter("lng"));
-    initialize();
+    initializeMap();
 });
 
 function setLoggedUser() {
@@ -81,7 +81,7 @@ function updateMarkerAddress(str) {
     document.getElementById('address').innerHTML = str;
 }
 
-function initialize() {
+function initializeMap() {
     var icon = {
         url: "https://lh3.googleusercontent.com/qmpu9eiTI5kWjySD8ShgjrNE77SZohGBqpbLNm90AS1ETvxICyhyKvNgRf8f98TYhQ=w300",
         scaledSize: new google.maps.Size(50, 50)
@@ -101,11 +101,12 @@ function initialize() {
     });
 
     for (i = 0; i < locations.length; i++) {
+        var date = new Date(Date.now());
         var restaurantName = restaurants[i]["name"];
         var restaurantTopCategories = restaurants[i]["topCategories"];
         var restaurantRating = restaurants[i]["ratingScore"];
         var restaurantLogo = "https://d1v73nxuzaqxgd.cloudfront.net/restaurants/" + restaurants[i]["logo"];
-        var restaurantDeliveryTimeMaxMinutes = restaurants[i]["deliveryTimeMaxMinutes"];
+        var maxArrivalTime = new Date(date.setMinutes(date.getMinutes() + parseInt(restaurants[i]["deliveryTimeMaxMinutes"])));
         var restaurantProfile = "http://www.pedidosya.com.uy/restaurantes/montevideo/" + restaurants[i]["link"] + "-menu";
         var content = '<div id="content">'+
             '<div id="siteNotice">'+
@@ -113,7 +114,9 @@ function initialize() {
             '<img src="' + restaurantLogo + '">'+
             '<h4 id="firstHeading" class="firstHeading">' + restaurantName + '</h4>'+
             '<p id="firstHeading" class="firstHeading"> Categorías: ' + restaurantTopCategories + '</p>'+
+            '<p id="firstHeading" class="firstHeading"> Hora máxima de llegada: ' + maxArrivalTime.getHours() + ":" + maxArrivalTime.getMinutes() + '</p>'+
             '<p id="firstHeading" class="firstHeading"> Calificación: ' + restaurantRating + '</p>'+
+            '<a href="' + restaurantProfile + '">Ver restaurante</a>' +
             '</div>'+
             '</div>';
 
