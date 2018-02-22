@@ -48,17 +48,7 @@ public class Login {
         headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
         ResponseEntity<String> exchange;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            exchange = restTemplate.exchange(getAppTokenUri, HttpMethod.GET, entity, String.class);
-            AccessToken accessToken = objectMapper.readValue(exchange.getBody(), AccessToken.class);
-            return accessToken.getAccess_token();
-        }
-        catch (Exception e) {
-            logger.warn("An error ocurred while obtaining App token");
-            // FIXME: throw 401
-        }
-        return new String();
+        return makeRequest(getAppTokenUri, restTemplate, entity);
     }
 
     private static String getUserToken(String appToken, String email, String password) {
@@ -70,18 +60,7 @@ public class Login {
         headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
         headers.add("Authorization", appToken);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        ResponseEntity<String> exchange;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            exchange = restTemplate.exchange(getAppTokenUri, HttpMethod.GET, entity, String.class);
-            AccessToken accessToken = objectMapper.readValue(exchange.getBody(), AccessToken.class);
-            return accessToken.getAccess_token();
-        }
-        catch (Exception e) {
-            logger.warn("An error ocurred while obtaining App token");
-            // FIXME: throw 401
-        }
-        return new String();
+        return makeRequest(getAppTokenUri, restTemplate, entity);
     }
 
     private static User getUserInfo(String userToken) {
@@ -105,6 +84,21 @@ public class Login {
             // FIXME: throw 401
         }
         return new User();
+    }
+
+    private static String makeRequest(String uri, RestTemplate restTemplate, HttpEntity<String> entity) {
+        ResponseEntity<String> exchange;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            exchange = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
+            AccessToken accessToken = objectMapper.readValue(exchange.getBody(), AccessToken.class);
+            return accessToken.getAccess_token();
+        }
+        catch (Exception e) {
+            logger.warn("An error ocurred while obtaining App token");
+            return new String();
+            // FIXME: throw 401
+        }
     }
 
 }

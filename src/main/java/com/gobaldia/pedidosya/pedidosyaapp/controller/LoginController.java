@@ -29,11 +29,19 @@ public class LoginController {
 
         User loggedUser = Login.login(userLogin.getEmail(), userLogin.getPassword(), response);
 
-        String loggedUserName = loggedUser.getName();
-        String loggedUserLastName = loggedUser.getLastName();
-        response.addCookie(new Cookie("loggedUserName", loggedUserName));
-        response.addCookie(new Cookie("loggedUserLastName", loggedUserLastName));
+        if (loggedUser.getId() != null) {
+            String loggedUserName = loggedUser.getName();
+            String loggedUserLastName = loggedUser.getLastName();
+            response.addCookie(new Cookie("loggedUserName", loggedUserName));
+            response.addCookie(new Cookie("loggedUserLastName", loggedUserLastName));
 
-        return new ModelAndView("redirect:/home");
+            return new ModelAndView("redirect:/home");
+        }
+        else {
+            model.addAttribute("loginError", "Email y/o contraseña incorrectos");
+
+            return new ModelAndView("/login");
+        }
+
     }
 }

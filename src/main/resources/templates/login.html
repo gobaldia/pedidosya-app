@@ -24,6 +24,9 @@
                 <div class="form-group-submit submit">
                     <input type="submit" class="button" value="Iniciar sesión" title="Iniciar sesión    "/>
                 </div>
+                <div th:if="${loginError}" class="alert alert-danger fade in">
+                    <p th:text="${loginError}"></p>
+                </div>
             </fieldset>
         </form>
 

@@ -2,9 +2,6 @@ package com.gobaldia.pedidosya.pedidosyaapp.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gobaldia.pedidosya.pedidosyaapp.model.AccessToken;
-import com.gobaldia.pedidosya.pedidosyaapp.model.Restaurant;
-import com.gobaldia.pedidosya.pedidosyaapp.model.UserLogin;
 import com.gobaldia.pedidosya.pedidosyaapp.security.Login;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,15 +10,11 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
