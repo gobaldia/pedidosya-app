@@ -1,6 +1,5 @@
 $(document).ready(function() {
     setLoggedUser();
-    //getLocation();
     initializeMap(-34.892349, -56.160892);
 });
 
