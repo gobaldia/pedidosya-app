@@ -2,7 +2,7 @@ package com.gobaldia.pedidosya.pedidosyaapp.controller;
 
 import com.gobaldia.pedidosya.pedidosyaapp.model.User;
 import com.gobaldia.pedidosya.pedidosyaapp.model.UserLogin;
-import com.gobaldia.pedidosya.pedidosyaapp.security.LoginPedidosYaStg;
+import com.gobaldia.pedidosya.pedidosyaapp.security.Login;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,7 +27,7 @@ public class LoginController {
                                 HttpServletResponse response,
                                 @ModelAttribute(value = "userLogin") UserLogin userLogin) {
 
-        User loggedUser = LoginPedidosYaStg.login(userLogin.getEmail(), userLogin.getPassword());
+        User loggedUser = Login.login(userLogin.getEmail(), userLogin.getPassword(), response);
 
         String loggedUserName = loggedUser.getName();
         String loggedUserLastName = loggedUser.getLastName();

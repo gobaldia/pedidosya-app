@@ -6,13 +6,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
 </head>
 <body>
-<!--<p th:text="'Bienvenido ' + ${name} + ' (username ' + ${preferred_username} + ', email ' + ${email} + ')'"/>-->
-<ol class="breadcrumb">
-    <li class="active" th:text="'Bienvenido ' + ${userFullName}"></li>
-</ol>
-<div class="container">
+<div class="container col-sm-4 col-md-offset-4">
     <h1>Iniciar sesión</h1>
-    <div class="form">
+    <div class="form-group">
         <form action="#" data-th-action="@{/dologin}" th:object="${userLogin}" method="post">
             <fieldset>
                 <div class="form-group">
