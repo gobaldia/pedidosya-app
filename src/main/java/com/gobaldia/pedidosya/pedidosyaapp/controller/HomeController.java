@@ -13,14 +13,18 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @Controller
 public class HomeController {
@@ -31,30 +35,35 @@ public class HomeController {
     private static String pedidosYaApiEndpoint = "http://stg-api.pedidosya.com/public/v1";
 
     @RequestMapping("/home")
-    public ModelAndView home(Model model, @CookieValue(value = "userToken", required = false) String userToken) {
+    public ModelAndView home(Model model,
+                             HttpServletRequest request,
+                             @CookieValue(value = "userToken", required = false) String userToken) {
         if (!userIsLogged(userToken)) {
             return new ModelAndView("redirect:/login");
         }
 
-        JsonNode restaurants = getRestaurants(userToken, "-34.892349,-56.160892");
-
-        JsonNode total = restaurants.get("total");
-
-        model.addAttribute("total", total);
-
         return new ModelAndView("index");
     }
 
-    @RequestMapping(value = "/get-restaurants", produces = {"application/json"}, method = RequestMethod.GET)
-    ResponseEntity<?> getRestaurantsByPass(@CookieValue(value = "userToken", required = false) String userToken) {
-        JsonNode restaurants = getRestaurants(userToken, "-34.892349,-56.160892");
+    @RequestMapping(value = "/get-restaurants", produces = {"application/json"}, method = GET)
+    ResponseEntity<?> getRestaurantsByPass(@CookieValue(value = "userToken", required = false) String userToken,
+                                           HttpServletRequest request) {
+        String lat = request.getParameter("lat");
+        String lng = request.getParameter("lng");
+        JsonNode restaurants;
+        if (lat != null && lng != null) {
+            restaurants = getRestaurants(userToken, String.format("%s,%s", lat, lng));
+        }
+        else {
+            restaurants = getRestaurants(userToken, "-34.892349,-56.160892");
+        }
         return ResponseEntity.ok(restaurants);
     }
 
 
     public JsonNode getRestaurants(String userToken, String coordinates) {
         RestTemplate restTemplate = new RestTemplate();
-        String getRestaurantsUri = String.format("%s/search/restaurants?country=%s&point=%s&max=20", pedidosYaApiEndpoint, 1, coordinates);
+        String getRestaurantsUri = String.format("%s/search/restaurants?country=%s&point=%s&max=20&opened=1&fields=name,topCategories,ratingScore,logo,deliveryTimeMaxMinutes,link,coordinates", pedidosYaApiEndpoint, 1, coordinates);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", userToken);
         headers.setAccept(Arrays.asList(MediaType.ALL));
