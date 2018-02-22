@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,8 +38,19 @@ public class HomeController {
 
         JsonNode restaurants = getRestaurants(userToken, "-34.892349,-56.160892");
 
+        JsonNode total = restaurants.get("total");
+
+        model.addAttribute("total", total);
+
         return new ModelAndView("index");
     }
+
+    @RequestMapping(value = "/get-restaurants", produces = {"application/json"}, method = RequestMethod.GET)
+    ResponseEntity<?> getRestaurantsByPass(@CookieValue(value = "userToken", required = false) String userToken) {
+        JsonNode restaurants = getRestaurants(userToken, "-34.892349,-56.160892");
+        return ResponseEntity.ok(restaurants);
+    }
+
 
     public JsonNode getRestaurants(String userToken, String coordinates) {
         RestTemplate restTemplate = new RestTemplate();
