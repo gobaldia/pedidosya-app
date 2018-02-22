@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inicio</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="container col-sm-4 col-md-offset-4">
+    <h1>Iniciar sesión</h1>
+    <div class="form-group">
+        <form action="#" data-th-action="@{/dologin}" th:object="${userLogin}" method="post">
+            <fieldset>
+                <div class="form-group">
+                    <input type="email" th:value="${email}" th:field="*{email}"
+                           id="email" placeholder="Email" required="true"
+                           class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <input type="password" th:value="${password}" th:field="*{password}"
+                           id="password" placeholder="Contraseña" required="true"
+                           class="form-control"/>
+                </div>
+                <div class="form-group-submit submit">
+                    <input type="submit" class="button" value="Iniciar sesión" title="Iniciar sesión    "/>
+                </div>
+                <div th:if="${loginError}" class="alert alert-danger fade in">
+                    <p th:text="${loginError}"></p>
+                </div>
+            </fieldset>
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>
