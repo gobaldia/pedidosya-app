@@ -180,8 +180,6 @@ function initializeMap(lat, long) {
 
 }
 
-// Onload handler to fire off the app.
-
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function parseCoordinates(coordinatesString) {
@@ -203,21 +201,3 @@ function getUrlParameter(sParam) {
         }
     }
 }
-
-/*
-function getLocation() {
-    if (navigator.geolocation) {
-        console.log("sip");
-        navigator.geolocation.getCurrentPosition(saveLocationToCookies);
-    } else {
-        console.log("nop");
-    }
-}
-
-function saveLocationToCookies(location)
-{
-    console.log(location.coords.latitude);
-    console.log(location.coords.longitude);
-    document.cookie = "latitude=" + location.coords.latitude;
-    document.cookie = "longitude=" + location.coords.longitude;
-}*/

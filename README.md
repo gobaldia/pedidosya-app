@@ -18,16 +18,19 @@ mvn spring-boot:run
 
 ### Usage
 The web application will run on [localhost:8085/login](http://localhost:8085/login).
-After login the user will be redirected to [localhost:8085/login](http://localhost:8085/login).
+After login the user will be redirected to [localhost:8085/home](http://localhost:8085/home).
 
 ### Administration endpoints
-The admin user will be able to check some administration info in the following endpoints:
+The admin user will be able to check some administration info in the following endpoints. The admin user must be logged with the following credentials:
+> UserName: admin
 
-#### /health
-Summarises the health status of our application
+> Password: admin
 
 #### /auditevents
-LLists security audit-related events such as user login/logout.
+Lists security audit-related events such as user login/logout.
 
 #### /metrics
 Details metrics of our application
+
+#### /health
+Summarises the health status of our application

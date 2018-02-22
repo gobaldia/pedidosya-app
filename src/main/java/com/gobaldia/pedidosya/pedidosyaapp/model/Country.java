@@ -17,4 +17,10 @@ public class Country {
     public Long getId() {
         return id;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Country toCompare = (Country) obj;
+        return this.getId() == toCompare.getId();
+    }
 }

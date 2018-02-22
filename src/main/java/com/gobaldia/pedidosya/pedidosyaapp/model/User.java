@@ -47,8 +47,4 @@ public class User {
     public Country getCountry() {
         return country;
     }
-
-    public String getFullName() {
-        return this.getName() + " " + this.getLastName();
-    }
 }

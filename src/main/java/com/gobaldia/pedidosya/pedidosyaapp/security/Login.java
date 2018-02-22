@@ -81,7 +81,6 @@ public class Login {
         }
         catch (Exception e) {
             logger.warn("An error ocurred while obtaining App token");
-            // FIXME: throw 401
         }
         return new User();
     }
@@ -97,7 +96,6 @@ public class Login {
         catch (Exception e) {
             logger.warn("An error ocurred while obtaining App token");
             return new String();
-            // FIXME: throw 401
         }
     }
 

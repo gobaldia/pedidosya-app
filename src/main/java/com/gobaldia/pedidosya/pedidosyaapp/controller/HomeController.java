@@ -56,7 +56,7 @@ public class HomeController {
 
     public JsonNode getRestaurants(String userToken, String coordinates) {
         RestTemplate restTemplate = new RestTemplate();
-        String getRestaurantsUri = String.format("%s/search/restaurants?country=%s&point=%s&max=20&opened=1&fields=name,topCategories,ratingScore,logo,deliveryTimeMaxMinutes,link,coordinates", pedidosYaApiEndpoint, 1, coordinates);
+        String getRestaurantsUri = String.format("%s/search/restaurants?country=%s&point=%s&max=20&opened=1&fields=name,allCategories,ratingScore,logo,deliveryTimeMaxMinutes,link,coordinates", pedidosYaApiEndpoint, 1, coordinates);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", userToken);
         headers.setAccept(Arrays.asList(MediaType.ALL));
@@ -71,7 +71,6 @@ public class HomeController {
         }
         catch (Exception e) {
             logger.warn("An error ocurred while obtaining restaurants");
-            // FIXME: throw 401
         }
         return null;
     }
