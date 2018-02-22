@@ -1,7 +1,7 @@
 $(document).ready(function() {
     setLoggedUser();
-    //getRestaurants(getCookie("userToken"), getUrlParameter("lat"), getUrlParameter("lng"));
-    initializeMap();
+    //getLocation();
+    initializeMap(-34.892349, -56.160892);
 });
 
 function setLoggedUser() {
@@ -81,12 +81,18 @@ function updateMarkerAddress(str) {
     document.getElementById('address').innerHTML = str;
 }
 
-function initializeMap() {
+function initializeMap(lat, long) {
     var icon = {
         url: "https://lh3.googleusercontent.com/qmpu9eiTI5kWjySD8ShgjrNE77SZohGBqpbLNm90AS1ETvxICyhyKvNgRf8f98TYhQ=w300",
         scaledSize: new google.maps.Size(50, 50)
     };
-    restaurants = getRestaurants(getCookie("userToken"), getUrlParameter("lat"), getUrlParameter("lng"));
+    if (getUrlParameter("lat") && getUrlParameter("lng")) {
+        restaurants = getRestaurants(getCookie("userToken"), getUrlParameter("lat"), getUrlParameter("lng"));
+    }
+    else {
+        restaurants = getRestaurants(getCookie("userToken"), lat, long);
+    }
+
     var locations = [];
     for (i = 0; i < restaurants.length; i++) {
         coord = parseCoordinates(restaurants[i]["coordinates"]);
@@ -120,25 +126,11 @@ function initializeMap() {
             '</div>'+
             '</div>';
 
-        // var infowindow = new google.maps.InfoWindow({
-        //     content: contentString
-        // });
         var marker = new google.maps.Marker({
             position: locations[i],
             icon: icon,
             map: map
         });
-
-        /*google.maps.event.addListener('click', (function(marker, i) {
-            return function() {
-                infowindow.setContent("x");
-                infowindow.open(map, marker);
-            }
-        })(marker, i));*/
-
-        /*marker.addListener('click', function() {
-            infowindow.open(map, marker);
-        });*/
 
         var infowindow = new google.maps.InfoWindow();
 
@@ -150,35 +142,41 @@ function initializeMap() {
         })(marker,content,infowindow));
     }
 
-    /*for (i = 0; i < 2; i++) {
-        var marker = new google.maps.Marker({
-            position: arr[i],
-            title: 'Point A',
-            map: map,
-            draggable: true
+    google.maps.event.addListener(map, 'click', function(event) {
+        mapZoom = map.getZoom();
+        startLocation = event.latLng;
+        setTimeout(placeMarker, 600);
+    });
+
+    function placeMarker() {
+        if(mapZoom == map.getZoom()){
+            new google.maps.Marker({position: location, map: map});
+        }
+    }
+
+    google.maps.event.addListener(map, 'bounds_changed', function() {
+        var lat1 = -30.0;
+        var lat2 = -35.0;
+        var lng1 = -53.0;
+        var lng2 = -59.0;
+
+        var rectangle = new google.maps.Polygon({
+            paths : [
+                new google.maps.LatLng(lat1, lng1),
+                new google.maps.LatLng(lat2, lng1),
+                new google.maps.LatLng(lat2, lng2),
+                new google.maps.LatLng(lat1, lng2)
+            ],
+            strokeOpacity: 0,
+            fillOpacity : 0,
+            map : map
         });
-
-        // Update current position info.
-
-        updateMarkerPosition(arr[i]);
-        geocodePosition(arr[i]);
-
-        // Add dragging event listeners.
-
-        google.maps.event.addListener(marker, 'dragstart', function() {
-            updateMarkerAddress('Dragging...');
+        google.maps.event.addListener(rectangle, 'click', function(args) {
+            var latitude = args.latLng.valueOf().lat();
+            var longitude = args.latLng.valueOf().lng();
+            initializeMap(latitude, longitude);
         });
-
-        google.maps.event.addListener(marker, 'drag', function() {
-            updateMarkerStatus('Dragging...');
-            updateMarkerPosition(marker.getPosition());
-        });
-
-        google.maps.event.addListener(marker, 'dragend', function() {
-            updateMarkerStatus('Drag ended');
-            geocodePosition(marker.getPosition());
-        });
-    }*/
+    });
 
 }
 
@@ -205,3 +203,21 @@ function getUrlParameter(sParam) {
         }
     }
 }
+
+/*
+function getLocation() {
+    if (navigator.geolocation) {
+        console.log("sip");
+        navigator.geolocation.getCurrentPosition(saveLocationToCookies);
+    } else {
+        console.log("nop");
+    }
+}
+
+function saveLocationToCookies(location)
+{
+    console.log(location.coords.latitude);
+    console.log(location.coords.longitude);
+    document.cookie = "latitude=" + location.coords.latitude;
+    document.cookie = "longitude=" + location.coords.longitude;
+}*/
