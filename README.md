@@ -5,6 +5,21 @@ This repo contains the solution of the PedidosYa​ ​Fullstack​ ​Technical
 ### Description
 The project consists in a Spring MVC application.
 
+### Why did I used this stack?
+I used this stack because of the following reasons:
+
+* Familiarity with the stack: I'm already used to use Spring MVC.
+* Administration: Spring offers a full suite of administration endpoints. With just a few configurations it's easy to administration an application.
+* Multiplatform: the application could run in any computer with JVM.
+* Scalability: it's easy to scale the app. The app is totally state-less, so it's very easy to scale.
+
+### Uncompleted requirements
+I didn't implemented the following features:
+
+* Disabled identical request in a 1 minute time-box.
+* Provide an endpoint to configure the time related to the previous point.
+* Take advantage of browser's HTML5​ ​Geolocation.
+
 ### How to run
 Clone the repo
 ```
